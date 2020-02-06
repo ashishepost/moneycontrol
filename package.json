@@ -1,0 +1,30 @@
+{
+  "name": "source-code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aternus/csv-to-xlsx": "^1.0.12",
+    "axios": "^0.19.2",
+    "cheerio": "^1.0.0-rc.3",
+    "clipboardy": "^2.1.0",
+    "copy-to-clipboard": "^3.2.1",
+    "csv-writer": "^1.6.0",
+    "dom-parser": "^0.1.6",
+    "html-dom-parser": "^0.2.3",
+    "html-table-to-json": "^1.0.0",
+    "moment": "^2.24.0",
+    "node-html-parser": "^1.2.1",
+    "sync-request": "^6.1.0",
+    "voca": "^1.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
