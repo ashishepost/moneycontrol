@@ -67,9 +67,28 @@ const parseHTML = async(selector) => {
 
         let ratioURLHTML = URLRequester(ratioURL);
         let ratioData = getInterestCover(ratioURLHTML)
+        // records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, interestcover: ratioData, ratioURL: ratioURL }, );
+        
+        let netProfitMarginData = getNetProfitMargin(ratioURLHTML);
+      
+        console.log(Array.isArray(netProfitMarginData));
+        
+        if (Array.isArray(netProfitMarginData)) {
+            let allYearsSeparatedData = netProfitMarginData.split(",");
+            console.log(allYearsSeparatedData);
+            // process.exit(0);
+    
+            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, '2019': allYearsSeparatedData[0], '2018': allYearsSeparatedData[1], '2017': allYearsSeparatedData[2], '2016': allYearsSeparatedData[3], '2015': allYearsSeparatedData[4], ratioURL: ratioURL }, );
+    
+          
+        }else{
+            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, ratioURL: ratioURL }, );
 
-
-        records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, interestcover: ratioData, ratioURL: ratioURL }, );
+        }
+       
+        
+        // For One Record While Checking
+        break;
         console.log("record " + index);
         // console.log(allColums[0].firstChild.textContent);
         // console.log(allColums[1].firstChild.textContent);
@@ -139,13 +158,47 @@ function getInterestCover(data) {
     }
 }
 
+function getNetProfitMargin(data) {
+    const tempDOM = parseHTMLTableToJSON(data); // All Rows
+    
+    // fs.writeFileSync("/usr/local/google/home/tiwashish/projects/personal/projects/moneycontrol/scrapper/source-code/temp/allrows.txt", JSON.stringify(tempDOM));
+    // process.exit(0);
+
+    let allColums = tempDOM.getElementsByTagName("td");
+    for (let index = 0; index < allColums.length; index++) {
+        const element = allColums[index];
+        console.log(element.innerHTML);
+        // fs.writeFileSync("/usr/local/google/home/tiwashish/projects/personal/projects/moneycontrol/scrapper/source-code/temp/allrows.txt", JSON.stringify(tempDOM));
+        // process.exit(0);
+
+        if (element.innerHTML == "Net Profit Margin(%)") {
+            if (allColums[index + 1].innerHTML) {
+                // console.log(allColums[index + 1].innerHTML + ',' + allColums[index + 2].innerHTML + ',' + allColums[index + 3].innerHTML + ',' + allColums[index + 4].innerHTML + ',' + allColums[index + 5].innerHTML);
+                
+                return allColums[index + 1].innerHTML + ',' + allColums[index + 2].innerHTML + ',' + allColums[index + 3].innerHTML + ',' + allColums[index + 4].innerHTML + ',' + allColums[index + 5].innerHTML
+            } else {
+                return ",";
+            };
+        }
+    }
+}
+
+
+
+
+
 function writeCSV(destination) {
     const csvWriter = createCsvWriter({
         path: destination,
         header: [
             { id: 'company', title: 'Company' },
             { id: 'lastprice', title: 'Price' },
-            { id: 'interestcover', title: 'Ratio' },
+            { id: 'ratio', title: 'Ratio' },
+            { id: '2019', title: 'Year 2019' },
+            { id: '2018', title: 'Year 2018' },
+            { id: '2017', title: 'Year 2017' },
+            { id: '2016', title: 'Year 2016' },
+            { id: '2015', title: 'Year 2015' },
             { id: 'ratioURL', title: 'Ratio URL' }
         ]
     });
