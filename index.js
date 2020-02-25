@@ -71,24 +71,32 @@ const parseHTML = async(selector) => {
         
         let netProfitMarginData = getNetProfitMargin(ratioURLHTML);
       
-        console.log(Array.isArray(netProfitMarginData));
+        // console.log("hello");
         
-        if (Array.isArray(netProfitMarginData)) {
-            let allYearsSeparatedData = netProfitMarginData.split(",");
-            console.log(allYearsSeparatedData);
+        // console.log(netProfitMarginData);
+        // let allYearsSeparatedData = netProfitMarginData.split(",");
+        if (netProfitMarginData === undefined) {
+            netProfitMarginData = ",";
+            
+        }
+        if ( netProfitMarginData.includes(".")) {
+            let allYearsSeparatedData = netProfitMarginData.split("::");
+            // console.log(netProfitMarginData);
+            // console.log(allYearsSeparatedData[2]);
             // process.exit(0);
-    
-            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, '2019': allYearsSeparatedData[0], '2018': allYearsSeparatedData[1], '2017': allYearsSeparatedData[2], '2016': allYearsSeparatedData[3], '2015': allYearsSeparatedData[4], ratioURL: ratioURL }, );
-    
+            
+            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, 2019: allYearsSeparatedData[0], 2018: allYearsSeparatedData[1], 2017: allYearsSeparatedData[2], 2016: allYearsSeparatedData[2], 2015: allYearsSeparatedData[4], ratioURL: ratioURL });
+            // console.log({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, '2019': allYearsSeparatedData[0]), '2018': allYearsSeparatedData[1]), '2017': allYearsSeparatedData[2]), '2016': allYearsSeparatedData[3]), '2015': allYearsSeparatedData[4]), ratioURL: ratioURL });
+            
           
         }else{
-            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, ratioURL: ratioURL }, );
+            records.push({ company: allColums[0].firstChild.textContent, lastprice: allColums[1].firstChild.textContent, ratio: ratioData, ratioURL: ratioURL } );
 
         }
        
         
         // For One Record While Checking
-        break;
+        // break;
         console.log("record " + index);
         // console.log(allColums[0].firstChild.textContent);
         // console.log(allColums[1].firstChild.textContent);
@@ -156,6 +164,7 @@ function getInterestCover(data) {
             };
         }
     }
+    // return ',';
 }
 
 function getNetProfitMargin(data) {
@@ -167,15 +176,15 @@ function getNetProfitMargin(data) {
     let allColums = tempDOM.getElementsByTagName("td");
     for (let index = 0; index < allColums.length; index++) {
         const element = allColums[index];
-        console.log(element.innerHTML);
+        // console.log(element.innerHTML);
         // fs.writeFileSync("/usr/local/google/home/tiwashish/projects/personal/projects/moneycontrol/scrapper/source-code/temp/allrows.txt", JSON.stringify(tempDOM));
         // process.exit(0);
 
-        if (element.innerHTML == "Net Profit Margin(%)") {
+        if (element.innerHTML == "Net Profit Margin(%)" || element.innerHTML == "Net Profit Margin") {
             if (allColums[index + 1].innerHTML) {
-                // console.log(allColums[index + 1].innerHTML + ',' + allColums[index + 2].innerHTML + ',' + allColums[index + 3].innerHTML + ',' + allColums[index + 4].innerHTML + ',' + allColums[index + 5].innerHTML);
+                // console.log(allColums[index + 1].innerHTML + '::' + allColums[index + 2].innerHTML + '::' + allColums[index + 3].innerHTML + '::' + allColums[index + 4].innerHTML + '::' + allColums[index + 5].innerHTML);
                 
-                return allColums[index + 1].innerHTML + ',' + allColums[index + 2].innerHTML + ',' + allColums[index + 3].innerHTML + ',' + allColums[index + 4].innerHTML + ',' + allColums[index + 5].innerHTML
+                return allColums[index + 1].innerHTML + '::' + allColums[index + 2].innerHTML + '::' + allColums[index + 3].innerHTML + '::' + allColums[index + 4].innerHTML + '::' + allColums[index + 5].innerHTML;
             } else {
                 return ",";
             };
@@ -194,11 +203,11 @@ function writeCSV(destination) {
             { id: 'company', title: 'Company' },
             { id: 'lastprice', title: 'Price' },
             { id: 'ratio', title: 'Ratio' },
-            { id: '2019', title: 'Year 2019' },
-            { id: '2018', title: 'Year 2018' },
-            { id: '2017', title: 'Year 2017' },
-            { id: '2016', title: 'Year 2016' },
-            { id: '2015', title: 'Year 2015' },
+            { id: 2019, title: 'Year 2019' },
+            { id: 2018, title: 'Year 2018' },
+            { id: 2017, title: 'Year 2017' },
+            { id: 2016, title: 'Year 2016' },
+            { id: 2015, title: 'Year 2015' },
             { id: 'ratioURL', title: 'Ratio URL' }
         ]
     });
@@ -216,7 +225,7 @@ function writeCSV(destination) {
 
             // Time Section
             hrend = process.hrtime(hrstart)
-            console.info('Execution time (hr): %dm %ds', hrend[0] / 60, hrend[0])
+            console.info('Execution time (Minutes:Seconds): %dm %ds', hrend[0] / 60, hrend[0])
         });
 }
 
