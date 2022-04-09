@@ -19,7 +19,7 @@
     "dom-parser": "^0.1.6",
     "html-dom-parser": "^0.2.3",
     "html-table-to-json": "^1.0.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "node-html-parser": "^1.2.1",
     "sync-request": "^6.1.0",
     "voca": "^1.4.0"
